@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider_pattern/model/catalog_model.dart';
@@ -13,13 +14,29 @@ class CatalogScreen extends StatefulWidget {
 class _CatalogScreenState extends State<CatalogScreen> {
   @override
   Widget build(BuildContext context) {
+    var arrayCount = context.watch<CartModel>().items;
     return Scaffold(
       appBar: AppBar(
         title: Text('Catalog', style: Theme.of(context).textTheme.headline5),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.shopping_cart),
-            onPressed: () => Navigator.pushNamed(context, '/cart'),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: arrayCount.isEmpty
+                ? IconButton(
+                    icon: const Icon(Icons.shopping_cart),
+                    onPressed: () => Navigator.pushNamed(context, '/cart'),
+                  )
+                : Badge(
+                    badgeContent: Text(
+                      '${arrayCount.length}',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    position: BadgePosition.topEnd(top: 0.0, end: 0.0),
+                    child: IconButton(
+                      icon: const Icon(Icons.shopping_cart),
+                      onPressed: () => Navigator.pushNamed(context, '/cart'),
+                    ),
+                  ),
           ),
         ],
       ),
